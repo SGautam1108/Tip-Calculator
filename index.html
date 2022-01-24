@@ -1,44 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Frontend Mentor | Tip calculator app</title>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Icon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
+  <header>
+    <h1 class="heading">Spli<br>tter</h1>
+  </header>
 
-  Bill
+  <main>
+    <div class="calc">
 
-  Select Tip %
-  5%
-  10%
-  15%
-  25%
-  50%
-  Custom
+      <div class="calc__input">
 
-  Number of People
+        <div class="calc__input-item calc__bill">
+          <label class="calc__input-label" for="input-bill">Bill</label>
+          <input type="number" id="input-bill" class="calc__input-numeric calc__input-bill" value="0">
+        </div>
 
-  Tip Amount
-  / person
+        <div class="calc__input-item calc__tip-percent">
+          <label class="calc__input-label" for="custom-tip">Select Tip %</label>
+          <div class="calc__tip-buttons">
+            <button type="button" class="calc__tip-button">5%</button>
+            <button type="button" class="calc__tip-button">10%</button>
+            <button type="button" class="calc__tip-button">15%</button>
+            <button type="button" class="calc__tip-button">25%</button>
+            <button type="button" class="calc__tip-button">50%</button>
+            <input type="text" id="custom-tip" class="calc__input-tip" value="Custom">
+          </div>
+        </div>
 
-  Total
-  / person
+        <div class="calc__input-item calc__people-count">
+          <label class="calc__input-label" for="count-input">Number of People</label>
+          <input type="number" id="count-input" class="calc__input-numeric calc__input-count" value="0">
+        </div>
 
-  Reset
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+      </div>
+
+      <div class="calc__output">
+
+        <div class="calc__output-item calc__tip-amt">
+          <label class="calc__output-label">Tip Amount <br> <span>/ person</span></label>
+          <output class="calc__output-result output__tip-amt">$0.00</output>
+        </div>
+
+        <div class="calc__output-item calc__total">
+          <label class="calc__output-label">Total <br> <span>/ person</span> </label>
+          <output class="calc__output-result output__total">$0.00</output>
+        </div>
+
+        <button type="reset" class="calc__reset calc__reset--disable">Reset</button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="attribution">
+    <p>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.</p>
+    <p>Coded by <a href="https://www.linkedin.com/in/sgautam1108/" target="_blank">Shaurya Gautam</a>.</p>
+  </footer>
+
+  <script src="index.js"></script>
 </body>
+
 </html>
