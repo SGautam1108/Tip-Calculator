@@ -7,11 +7,13 @@
     --light-greyish-cyan: hsl(185, 41%, 84%);
     --lighter-greyish-cyan: hsl(189, 41%, 97%);
     --disabled-btn-cyan: hsl(183, 41%, 29%);
+    --invalid-orange: hsl(29, 86%, 57%);
     --primary-font: "Space Mono", monospace;
     --fw-normal: 400;
     --fw-bold: 700;
     --fs-normal: 16px;
-    --fs-tablet: 12px;
+    --fs-small: 12px;
+    --fs-smaller: 8px;
 }
 
 html {
@@ -106,11 +108,11 @@ h1.heading {
 }
 
 .calc__input-label {
-    display: block;
+    display: inline-block;
     margin-bottom: 10px;
 }
 
-.calc__input input {
+.calc__input-field {
     background-color: var(--lighter-greyish-cyan);
 
     font-size: 1.5em;
@@ -152,6 +154,19 @@ h1.heading {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
     gap: 0.75em;
+}
+
+.calc__count-headings{
+    display: flex;
+    justify-content: space-between;
+}
+
+.calc__invalid-message{
+    color: var(--invalid-orange);
+}
+
+.hidden{
+    visibility: hidden;
 }
 
 /* Calculator Output side */
@@ -204,6 +219,10 @@ h1.heading {
     color: var(--very-dark-cyan);
 }
 
+.calc__input-count--invalid{
+    border: 1px solid  var(--invalid-orange);
+}
+
 .reset--disabled {
     pointer-events: none;
     cursor: not-allowed;
@@ -238,7 +257,7 @@ h1.heading {
 
 @media only screen and (max-width: 910px) {
     body {
-        font-size: var(--fs-tablet);
+        font-size: var(--fs-small);
     }
 }
 
@@ -278,9 +297,19 @@ h1.heading {
         font-size: 2em;
     }
 
-    @media only screen and (max-width: 375px) {
+    @media only screen and (max-width: 400px) {
         body {
-            font-size: var(--fs-tablet);
+            font-size: var(--fs-small);
+        }
+    }
+
+    @media only screen and (max-width: 300px) {
+        body {
+            font-size: var(--fs-smaller);
+        }
+
+        .calc{
+            height: 53em;
         }
     }
 }

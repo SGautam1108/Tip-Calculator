@@ -31,7 +31,7 @@
 
         <div class="calc__input-item calc__bill">
           <label class="calc__input-label" for="input-bill">Bill</label>
-          <input type="number" id="input-bill" min="0" max="1000000000" class="calc__input-numeric calc__input-bill"
+          <input type="number" id="input-bill" min="0" max="1000000000" class="calc__input-field calc__input-numeric calc__input-bill"
             value="0">
         </div>
 
@@ -43,13 +43,16 @@
             <button type="button" class="calc__button calc__tip-button">15%</button>
             <button type="button" class="calc__button calc__tip-button">25%</button>
             <button type="button" class="calc__button calc__tip-button">50%</button>
-            <input type="text" id="custom-tip" min="0" max="100" class="calc__input-tip" value="Custom">
+            <input type="text" id="custom-tip" min="0" max="100" class="calc__input-field calc__input-tip" value="Custom">
           </div>
         </div>
 
         <div class="calc__input-item calc__people-count">
-          <label class="calc__input-label" for="count-input">Number of People</label>
-          <input type="number" id="count-input" min="0" max="1000000000" class="calc__input-numeric calc__input-count"
+          <div class="calc__count-headings">
+            <label class="calc__input-label" for="count-input">Number of People</label>
+            <span class="calc__invalid-message hidden">Can't be 0</span>
+          </div>
+          <input type="number" id="count-input" min="0" max="1000000000" class="calc__input-field calc__input-numeric calc__input-count"
             value="0">
         </div>
 
@@ -59,12 +62,12 @@
 
         <div class="calc__output-item calc__tip-amt">
           <p class="calc__output-label">Tip Amount <br> <span>/ person</span></p>
-          <output class="calc__output-result calc__tip-amt">$0.00</output>
+          <output class="calc__output-result calc__tip-amt-result">$0.00</output>
         </div>
 
         <div class="calc__output-item calc__total">
           <p class="calc__output-label">Total <br> <span>/ person</span> </p>
-          <output class="calc__output-result calc__total">$0.00</output>
+          <output class="calc__output-result calc__total-result">$0.00</output>
         </div>
 
         <button type="button" class="calc__button calc__reset" aria-disabled="true">Reset</button>

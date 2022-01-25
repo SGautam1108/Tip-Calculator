@@ -8,8 +8,11 @@ const tipButtons = document.querySelectorAll(".calc__tip-button");
 const resetButton = document.querySelector(".calc__reset");
 
 const outputResults = document.querySelectorAll(".calc__output-result");
-const outputTipAmt = document.querySelector(".calc__tip-amt");
-const outputTotal = document.querySelector(".calc__total");
+const outputTipAmt = document.querySelector(".calc__tip-amt-result");
+const outputTotal = document.querySelector(".calc__total-result");
+
+const errorMsg = document.querySelector(".calc__invalid-message");
+
 
 let billFlag = false,
     tipFlag = false,
@@ -23,21 +26,25 @@ const resetAll = () => {
     disableTipButtons();
 
     disableReset();
+
+    resetOutput();
+
+    resetMessage();
 };
 
 const resetInputs = () => {
     inputs.forEach((input) => {
-        if (input.value !== "" || input.classList.contains("input--entered")) {
-            input.classList.remove("input--entered");
+       
+        input.classList.remove("input--entered");
 
-            //if input is custom tip, need to change type and set "Custom"
-            if (input.classList.contains("calc__input-tip")) {
-                input.setAttribute("type", "text");
-                input.value = "Custom";
-            } else {
-                input.value = "0";
-            }
+        //if input is custom tip, need to change type and set "Custom"
+        if (input.classList.contains("calc__input-tip")) {
+            input.setAttribute("type", "text");
+            input.value = "Custom";
+        } else {
+            input.value = "0";
         }
+        
     });
 
     billFlag = false;
@@ -70,13 +77,22 @@ const enableReset = () => {
     resetButton.setAttribute("aria-disabled", "false");
 };
 
-const checkResetEnable = () => {
-    if (resetButton.classList.contains("reset--disabled")) {
-        enableReset();
-    }
-};
+const resetMessage = () => {
+    errorMsg.classList.add("hidden");
+    inputCount.classList.remove("calc__input-count--invalid");
+}
 
-const checkValidInput = (currInp) => {
+const showMessage = () => {
+    errorMsg.classList.remove("hidden");
+    inputCount.classList.add("calc__input-count--invalid");
+}
+
+const resetOutput = () => {
+    outputTipAmt.textContent = "$0.00";
+    outputTotal.textContent = "$0.00";
+}
+
+const checkValidRange = (currInp) => {
     const min = +currInp.getAttribute("min");
     const max = +currInp.getAttribute("max");
 
@@ -88,6 +104,18 @@ const checkValidInput = (currInp) => {
 
     return false;
 };
+
+const checkZeroCount = () => {
+    
+    if(inputCount.value == "0"){
+        showMessage();
+        return false;
+    } else {
+        resetMessage();
+        return true;
+    }
+}
+
 
 const checkTip = (btn) => {
     if (btn.classList.contains("calc__input-tip")) return true;
@@ -103,16 +131,16 @@ const checkBill = (btn) => {
 
 const inputsFocus = (e) => {
     let currInp = e.target;
-    if (currInp.classList.contains("input--entered") == false) {
-        currInp.classList.add("input--entered");
-    }
+    
+    currInp.classList.add("input--entered");
+    
 
     const isTipInp = checkTip(currInp);
     if (isTipInp) {
         currInp.setAttribute("type", "number");
     }
 
-    checkResetEnable();
+    enableReset();
 };
 
 const inputsBlur = (e) => {
@@ -121,38 +149,53 @@ const inputsBlur = (e) => {
     const isTipInp = checkTip(currInp);
     const isBillInp = checkBill(currInp);
 
+
     if (
         currInp.value == "" ||
         (isTipInp && currInp.value == "Custom") ||
-        (!isTipInp && currInp.value == "0")
+        (isBillInp && currInp.value == "0")
     ) {
+
+        //flag false => Blank/defaultValues inside input fields or might be that a button is selected
+
         if (isTipInp) {
             currInp.setAttribute("type", "text");
             currInp.value = "Custom";
-        } else currInp.value = "0";
+            const activeBtn = findActiveButton();
+            if(!activeBtn) tipFlag = false;
+        } else if(isBillInp) {
+            currInp.value = "0";
+            billFlag = false;
+        } else {
+            currInp.value = "0";
+            showMessage();
+            countFlag = false; 
+        }
 
         currInp.classList.remove("input--entered");
 
-        //flag false => defaultValues inside input fields or might be that a button is selected
-        if (isTipInp){
-            const activeBtn = findActiveButton();
-            if(!activeBtn) tipFlag = false; 
-        }
-        else if (isBillInp) billFlag = false;
-        else countFlag = false;
     } else {
-        let validInp = checkValidInput(currInp);
 
-        if (!validInp) {
-            //show error message while updating the data
-        }
-
+        checkValidRange(currInp);
+       
         //flag true => valid values exist
         if (isTipInp) {
             tipFlag = true;
             disableTipButtons();
-        } else if (isBillInp) billFlag = true;
-        else countFlag = true;
+        }
+        else if (isBillInp) billFlag = true;
+        else{
+            const  validCount = checkZeroCount();
+
+            if(validCount){
+                countFlag = true;
+                resetMessage();
+            }
+            else {
+                countFlag = false;
+                showMessage();
+            }
+        }
     }
 
     if (billFlag == false && tipFlag == false && countFlag == false) disableReset();
@@ -180,11 +223,10 @@ const selectTipButton = (e) => {
         // input Tip to default
         inputTip.setAttribute("type", "text");
         inputTip.value = "Custom";
-        if (inputTip.classList.contains("input--entered"))
-            inputTip.classList.remove("input--entered");
+        inputTip.classList.remove("input--entered");
 
         // enable Reset if disabled
-        checkResetEnable();
+        enableReset();
     }
 };
 
@@ -200,16 +242,18 @@ const getInputs = () => {
         if (activeBtn) tipValue = +activeBtn.textContent.replace("%", "");
 
         calculateOutput(billValue, tipValue, countValue);
+    } else {
+        if(outputTipAmt.textContent != "$0.00" || outputTotal.textContent != "$0.00") resetOutput();
     }
 };
 
 // Show Output
 
-const calculateOutput = (b, t, c) => {
-    const tipAmt = +((b * (0.01*t)) / c).toFixed(2);
-    const total = +((b / c) + tipAmt).toFixed(2);
-
-    console.log(outputTipAmt.textContent);
+const calculateOutput = (bill, tip, count) => {
+    const tipAmt = ((bill * (0.01*tip)) / count).toFixed(2);
+    const total = ((bill / count) + +tipAmt).toFixed(2);
+    outputTipAmt.textContent = "$" + tipAmt;
+    outputTotal.textContent = "$" + total;
 }
 
 // Main code-
@@ -228,4 +272,4 @@ tipButtons.forEach((btn) => {
 
 setInterval(() => {
     getInputs();
-}, 1000);
+}, 500);
