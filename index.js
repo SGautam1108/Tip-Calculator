@@ -284,3 +284,8 @@ setInterval(() => {
     // console.log(billFlag, tipFlag, countFlag);
     getInputs();
 }, 500);
+
+
+// Try onchange
+// Set max min input text afterwards
+// change input to max min realtime

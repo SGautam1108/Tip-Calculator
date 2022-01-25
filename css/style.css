@@ -37,11 +37,16 @@ input {
     cursor: pointer;
 }
 
-/* remove spinners for number type input */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+/* remove spinners for input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 /* Header Section */
@@ -156,16 +161,16 @@ h1.heading {
     gap: 0.75em;
 }
 
-.calc__count-headings{
+.calc__count-headings {
     display: flex;
     justify-content: space-between;
 }
 
-.calc__invalid-message{
+.calc__invalid-message {
     color: var(--invalid-orange);
 }
 
-.hidden{
+.hidden {
     visibility: hidden;
 }
 
@@ -219,8 +224,8 @@ h1.heading {
     color: var(--very-dark-cyan);
 }
 
-.calc__input-count--invalid{
-    border: 1px solid  var(--invalid-orange);
+.calc__input-count--invalid {
+    border: 1px solid var(--invalid-orange);
 }
 
 .reset--disabled {
@@ -296,7 +301,6 @@ h1.heading {
     .calc__output-result {
         font-size: 2em;
     }
-
 }
 
 @media only screen and (max-width: 400px) {
@@ -310,7 +314,7 @@ h1.heading {
         font-size: var(--fs-smaller);
     }
 
-    .calc{
+    .calc {
         height: 53em;
     }
 }
