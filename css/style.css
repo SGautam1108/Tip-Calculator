@@ -37,7 +37,7 @@ input {
     cursor: pointer;
 }
 
-/* emove spinners for number type input */
+/* remove spinners for number type input */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -297,19 +297,20 @@ h1.heading {
         font-size: 2em;
     }
 
-    @media only screen and (max-width: 400px) {
-        body {
-            font-size: var(--fs-small);
-        }
+}
+
+@media only screen and (max-width: 400px) {
+    body {
+        font-size: var(--fs-small);
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    body {
+        font-size: var(--fs-smaller);
     }
 
-    @media only screen and (max-width: 300px) {
-        body {
-            font-size: var(--fs-smaller);
-        }
-
-        .calc{
-            height: 53em;
-        }
+    .calc{
+        height: 53em;
     }
 }
