@@ -106,13 +106,17 @@ const checkValidRange = (currInp) => {
 };
 
 const checkZeroCount = () => {
-    
+
     if(inputCount.value == "0"){
-        showMessage();
-        return false;
+        countFlag = false;
+
+        if(billFlag && tipFlag){ // show message only if bill and tip entered
+            showMessage();
+        } else resetMessage();
+
     } else {
+        countFlag = true;
         resetMessage();
-        return true;
     }
 }
 
@@ -131,6 +135,7 @@ const checkBill = (btn) => {
 
 const inputsFocus = (e) => {
     let currInp = e.target;
+    currInp.value = "";
     
     currInp.classList.add("input--entered");
     
@@ -168,8 +173,10 @@ const inputsBlur = (e) => {
             billFlag = false;
         } else {
             currInp.value = "0";
-            showMessage();
-            countFlag = false; 
+            countFlag = false;
+            if(billFlag && tipFlag){ // show message only if bill and tip entered
+                showMessage();
+            } else resetMessage();
         }
 
         currInp.classList.remove("input--entered");
@@ -184,18 +191,10 @@ const inputsBlur = (e) => {
             disableTipButtons();
         }
         else if (isBillInp) billFlag = true;
-        else{
-            const  validCount = checkZeroCount();
+        
 
-            if(validCount){
-                countFlag = true;
-                resetMessage();
-            }
-            else {
-                countFlag = false;
-                showMessage();
-            }
-        }
+        checkZeroCount();
+        
     }
 
     if (billFlag == false && tipFlag == false && countFlag == false) disableReset();
@@ -225,6 +224,9 @@ const selectTipButton = (e) => {
         inputTip.value = "Custom";
         inputTip.classList.remove("input--entered");
 
+        //check if number of people are correct
+        checkZeroCount();
+
         // enable Reset if disabled
         enableReset();
     }
@@ -238,6 +240,8 @@ const getInputs = () => {
         let tipValue = +inputTip.value;
         let countValue = +inputCount.value;
 
+        console.log(countValue);
+
         const activeBtn = findActiveButton();
         if (activeBtn) tipValue = +activeBtn.textContent.replace("%", "");
 
@@ -250,6 +254,12 @@ const getInputs = () => {
 // Show Output
 
 const calculateOutput = (bill, tip, count) => {
+
+    if(!count || count == 0){
+        resetOutput();
+        return;
+    }
+
     const tipAmt = ((bill * (0.01*tip)) / count).toFixed(2);
     const total = ((bill / count) + +tipAmt).toFixed(2);
     outputTipAmt.textContent = "$" + tipAmt;
@@ -271,5 +281,6 @@ tipButtons.forEach((btn) => {
 });
 
 setInterval(() => {
+    // console.log(billFlag, tipFlag, countFlag);
     getInputs();
 }, 500);
